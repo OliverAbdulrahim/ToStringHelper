@@ -1,7 +1,7 @@
-# [![Build Status](https://travis-ci.org/OliverAbdulrahim/ToStringHelper.svg?branch=build)](https://travis-ci.org/OliverAbdulrahim/ToStringHelper)
+# ToStringHelper [![Build Status](https://travis-ci.org/OliverAbdulrahim/ToStringHelper.svg?branch=build)](https://travis-ci.org/OliverAbdulrahim/ToStringHelper)
 A project loosely based on the [MoreObjects.ToStringHelper](https://github.com/google/guava/blob/master/guava/src/com/google/common/base/MoreObjects.java#L136) class featured in Google's [Guava](https://github.com/google/guava) library.
 
-# Featured Classes
+### Featured Classes
 There are two variants of "to string" helper classes featured in this repository as delineated below:
 
 | Name | Description |
