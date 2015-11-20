@@ -34,6 +34,15 @@ public class ToStringHelper
     }
     
     /**
+     * Constructs a {@code ToStringHelper} with the given class as the name.
+     * 
+     * @param name The class whose name to use for this representation.
+     */
+    public ToStringHelper(Class<?> name) {
+        super(name);
+    }
+    
+    /**
      * Constructs a {@code ToStringHelper} with the given name.
      * 
      * @param name The name for this representation.
@@ -79,7 +88,7 @@ public class ToStringHelper
         String mappedValues = entries()
                 .stream()
                 .filter(entry -> !shouldOmit(entry.getValue()))
-                .map(entry -> entry.getKey() + '=' + get(entry.getKey()))
+                .map(entry -> entry.getKey() + " = " + get(entry.getKey()))
                 .collect(Collectors.joining(", "));
         return name + '{' + mappedValues + '}';
     }

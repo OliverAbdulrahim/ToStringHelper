@@ -1,9 +1,9 @@
 package functions;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.stream.Stream;
 
 /**
@@ -35,17 +35,17 @@ abstract class AbstractToStringHelper {
      * the target.
      */
     AbstractToStringHelper() {
-        this(new Object());
+        this("Object");
     }
     
     /**
      * Constructs an {@code AbstractToStringHelper} with the given object as the
      * target.
      * 
-     * @param target The object that this helper represents.
+     * @param target The class that this helper represents.
      */
-    AbstractToStringHelper(Object target) {
-        this(formatClass(target.getClass()));
+    AbstractToStringHelper(Class<?> target) {
+        this(formatClass(target));
     }
     
     /**
@@ -54,7 +54,7 @@ abstract class AbstractToStringHelper {
      */
     AbstractToStringHelper(String name) {
         this.name = name;
-        this.values = new TreeMap<>();
+        this.values = new LinkedHashMap<>();
     }
     
     /**
@@ -62,7 +62,7 @@ abstract class AbstractToStringHelper {
      * {@code String} containing the simple name of the class.
      * 
      * <p> If the given class is anonymous, this method returns a {@code String}
-     * with the characters {@code "$(Anonymous)"} prepended with the name of the
+     * with the characters {@code "$Anonymous"} prepended with the name of the
      * declaring class with a maximum depth of one.
      * 
      * @param c The class to convert to a {@code String}.
@@ -74,7 +74,11 @@ abstract class AbstractToStringHelper {
         // If the simple name of the class is empty, then the target object's
         // class is anonymous.
         if (name.isEmpty()) {
-            name = c.getDeclaringClass() + "$(Anonymous)";
+            name = c.getSuperclass().getName();
+            // Removes any package names, add one to offset possible -1 index if
+            // '.' does not occur
+            name = name.substring(name.lastIndexOf('.') + 1);
+            name += "$Anonymous";
         }
         return name;
     }

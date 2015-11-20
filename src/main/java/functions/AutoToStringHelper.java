@@ -35,7 +35,7 @@ public class AutoToStringHelper
      * @param target The name for this representation.
      */
     public AutoToStringHelper(Object target) {
-        super(target);
+        super(target.getClass());
         this.target = target;
         introspectFields();
     }
@@ -81,9 +81,9 @@ public class AutoToStringHelper
     public String toString() {
         String mappedValues = entries()
                 .stream()
-                .map(entry -> entry.getKey() + '=' + get(entry.getKey()))
+                .map(entry -> entry.getKey() + " = " + get(entry.getKey()))
                 .collect(Collectors.joining(", "));
         return name + '{' + mappedValues + '}';
     }
-    
+
 }
