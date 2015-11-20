@@ -19,7 +19,7 @@ public class ToStringHelper
     /**
      * Flag for toggling omission of any {@code null} values when this object is
      * converted into a {@code String}, {@code false} allowing such values and 
-     * {@code false} disallowing them.
+     * {@code true} disallowing them.
      * 
      * By default, this value is specified to be {@code false}.
      */
@@ -85,12 +85,12 @@ public class ToStringHelper
      */
     @Override
     public String toString() {
-        String mappedValues = entries()
+        String mappedEntries = entries()
                 .stream()
                 .filter(entry -> !shouldOmit(entry.getValue()))
                 .map(entry -> entry.getKey() + " = " + get(entry.getKey()))
                 .collect(Collectors.joining(", "));
-        return getName() + '{' + mappedValues + '}';
+        return getName() + '{' + mappedEntries + '}';
     }
     
     /**

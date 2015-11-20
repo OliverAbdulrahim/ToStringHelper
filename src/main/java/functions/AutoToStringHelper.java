@@ -79,11 +79,11 @@ public class AutoToStringHelper
      */
     @Override
     public String toString() {
-        String mappedValues = entries()
+        String mappedEntries = entries()
                 .stream()
                 .map(entry -> entry.getKey() + " = " + get(entry.getKey()))
                 .collect(Collectors.joining(", "));
-        return getName() + '{' + mappedValues + '}';
+        return getName() + '{' + mappedEntries + '}';
     }
 
 }
