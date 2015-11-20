@@ -48,7 +48,7 @@ public class AutoToStringHelper
         Field[] targetFields = target.getClass().getDeclaredFields();
         Map<String, Object> upstream = Stream.of(targetFields)
                 .collect(Collectors.toMap(Field :: getName, this :: getValue));
-        values.putAll(upstream);
+        addAll(upstream);
     }
     
     /**
@@ -83,7 +83,7 @@ public class AutoToStringHelper
                 .stream()
                 .map(entry -> entry.getKey() + " = " + get(entry.getKey()))
                 .collect(Collectors.joining(", "));
-        return name + '{' + mappedValues + '}';
+        return getName() + '{' + mappedValues + '}';
     }
 
 }

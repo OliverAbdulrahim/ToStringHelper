@@ -36,10 +36,10 @@ public class ToStringHelper
     /**
      * Constructs a {@code ToStringHelper} with the given class as the name.
      * 
-     * @param name The class whose name to use for this representation.
+     * @param c The class whose name to use for this representation.
      */
-    public ToStringHelper(Class<?> name) {
-        super(name);
+    public ToStringHelper(Class<?> c) {
+        super(c);
     }
     
     /**
@@ -90,7 +90,7 @@ public class ToStringHelper
                 .filter(entry -> !shouldOmit(entry.getValue()))
                 .map(entry -> entry.getKey() + " = " + get(entry.getKey()))
                 .collect(Collectors.joining(", "));
-        return name + '{' + mappedValues + '}';
+        return getName() + '{' + mappedValues + '}';
     }
     
     /**

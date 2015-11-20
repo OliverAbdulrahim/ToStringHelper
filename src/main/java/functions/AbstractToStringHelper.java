@@ -22,14 +22,14 @@ abstract class AbstractToStringHelper {
      * this {@code Map} are formatted with respect to their properties as 
      * specified in the {@link #toString()} method for this class.
      */
-    final Map<String, Object> values;
+    private final Map<String, Object> values;
     
     /**
-     * The name of this representation as specified during construction. By 
-     * default, this is the {@code class} name of the target object.
+     * The name of this representation as specified during construction. 
+     * default, this is the name of the {@code Object} class.
      */
-    final String name;
-    
+    private final String name;
+
     /**
      * Constructs an {@code AbstractToStringHelper} with an arbitrary object as 
      * the target.
@@ -82,6 +82,18 @@ abstract class AbstractToStringHelper {
         }
         return name;
     }
+
+    /**
+     * Returns the The name of this representation as specified during 
+     * construction.
+     * 
+     * @return The name of this representation.
+     */
+    String getName() {
+        return name;
+    }
+    
+// Mapping operations    
     
     /**
      * Associates the given property with the given tag within this 
@@ -96,7 +108,26 @@ abstract class AbstractToStringHelper {
         values.put(tag, property);
         return this;
     }
-
+    
+    /**
+     * Adds all the entries in the given {@code Map} into this object
+     */
+    void addAll(Map<String, Object> values) {
+        this.values.putAll(values);
+    }
+    
+    /**
+     * Returns an set view of the entries of tags and properties contained
+     * within this object.
+     * 
+     * @return An set containing the tag-property entries of this object.
+     */
+    Set<Map.Entry<String, Object>> entries() {
+        return values.entrySet();
+    }
+    
+// Formatting operations    
+    
     /**
      * Returns a {@code String} representation of the property, or value, mapped
      * to the given tag, or key. Wraps the given value if it is an array or 
@@ -111,16 +142,6 @@ abstract class AbstractToStringHelper {
     String get(String tag) {
         Object value = values.get(tag);
         return formatObject(value);
-    }
-    
-    /**
-     * Returns an set view of the entries of tags and properties contained
-     * within this object.
-     * 
-     * @return An set containing the tag-property entries of this object.
-     */
-    Set<Map.Entry<String, Object>> entries() {
-        return values.entrySet();
     }
     
     /**
@@ -198,6 +219,8 @@ abstract class AbstractToStringHelper {
                 ? Arrays.deepToString(array)
                 : Arrays.toString(array);
     }
+    
+// Abstract methods    
     
     /**
      * Constructs and returns a {@code String} representation of the object or
