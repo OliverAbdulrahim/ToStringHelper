@@ -6,3 +6,20 @@ jdk:
 branches:
   only:
     - build
+
+env:
+  global:
+  - secure: "njypzWiFG3IhRaX6ZXat3Fd3R68yH1gEj3H4V63gg8DxfipVlMZ8Krf1mU3TvVTnQh2p8J4Wd9y6z0zydolAqwnF8nskV/HKOF+l/c2hgxPpt
+4+7WzbgKf0NF7myWNCpfQe57m7CTKiyXXRfdZ9+PAzC1BTFN6pbwUvBeUjs/8+NeF3C6ub9qu8wdwiyqpnNIKhG3i0h7GO8SuxGHUgOb90RuwVweZfEeSpDm
+eKLhvJ47HL9UZDI/2T2ZTYFs9r2+f06WCk448c1xzx6QSddg9N5V4SzNgERgCtJ5Vg0nh/4BPBhitvPD7KMVwxFeE2aF2DZ4Z2wWJ0zEk9itdgFvdib0ET9n
+hsVuqB/KUJdaRlR9sFJrHLPxMY7ASFxMFqenqdrSpJ+oSmTp/gcJHf5CEkGsgoXV++LFPdODyr3NvacoTi7th4Wi/ObUUEGkdfWGeY5l0mNjf2xzOhaeMgQ7
+zx9m3FXsRtIMCYizBh27s4hk5IkWNyh1wWys3dkRnj9H+p01ssPFY1Y6u9gj81Pox0FyEACRJeWmp/yL/+4h+mD6MdF8FAs725FHjvPkA1G8oYmRxrglKvnZ
+SdaCNkK+yLSdWXHu8tvTLjdNJY+Bf/q/Q+23kALen4LCtoJw/QLyjRtN5YbrAeEKxpzlogyCkPqU95Y8jz+DDfyTKGwX68="
+
+install:
+  - mvn install -B -V -e
+
+after_success:
+  - mvn javadoc:javadoc
+  - chmod +x travis/push-javadoc-to-gh-pages.sh
+  - travis/push-javadoc-to-gh-pages.sh
