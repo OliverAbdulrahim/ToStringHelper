@@ -6,9 +6,49 @@ import java.util.stream.Collectors;
 /**
  * A mutable {@code String} representation of an arbitrary object. 
  * 
- * <p> This class allows for the specification of a name during construction as 
- * well as chaining of the {@link #add(java.lang.String, java.lang.Object)} 
- * operation.
+ * <p> Consider the example usage of the 
+ * {@link #add(java.lang.String, java.lang.Object)} operation shown below: 
+ * 
+ * <pre>{@code
+ *     ToStringHelper helper = new ToStringHelper("An Object")
+ *             .add("Some Tag", 12345)
+ *             .add("Another Tag", null);
+ *     System.out.println(helper);
+ * }</pre>
+ * 
+ * Each call to {@code add} specifies two parameters: an {@code Object} 
+ * property, or value, and a {@code String} tag, or name, to associate with the 
+ * property. Note the chaining of operations, which is made possible by the fact
+ * that {@code add} returns a reference to the calling object. The above would 
+ * print the following:
+ *
+ * <pre>{@code
+ *     An Object{Some Tag = 12345, Another Tag = null}
+ * }</pre>
+ *
+ * <p> To omit {@code null} values, use the {@link #omitNullValues} method. Like 
+ * {@link #add(java.lang.String, java.lang.Object) add}, this method returns a 
+ * reference to the caller, so it is possible to chain calls in a similar way:
+ * 
+ * <pre>{@code
+ *     ToStringHelper helper = new ToStringHelper("An Object")
+ *             .omitNullValues()
+ *             .add("Some Tag", 12345)
+ *             .add("Another Tag", null);
+ *     System.out.println(helper);
+ * }</pre>
+ * 
+ * In this example, the {@code "Another Tag"} {@code String} is associated with 
+ * a {@code null} value, which causes it to be ignored when the 
+ * {@code ToStringHelper} is converted into a String. Therefore, the above 
+ * prints out the following:
+ *
+ * <pre>{@code
+ *     An Object{Some Tag = 12345}
+ * }</pre>
+ * 
+ * <p> This class allows for the specification of a name in the form of a 
+ * {@code String} and {@code Class} during construction.
  * 
  * @author Oliver Abdulrahim
  */
@@ -78,8 +118,8 @@ public class ToStringHelper
     }
     
     /**
-     * Constructs and returns a {@code String} representation of data wrapped
-     * by this object.
+     * Collects, formats, and returns a {@code String} representation of all 
+     * tag/property pairs wrapped by this object in {@code tag=property} format.
      * 
      * @return A {@code String} representation of the object.
      */
