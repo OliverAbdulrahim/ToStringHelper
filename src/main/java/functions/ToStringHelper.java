@@ -119,7 +119,8 @@ public class ToStringHelper
     
     /**
      * Collects, formats, and returns a {@code String} representation of all 
-     * tag/property pairs wrapped by this object in {@code tag=property} format.
+     * tag/property pairs wrapped by this object in {@code "tag = property"} 
+     * format.
      * 
      * @return A {@code String} representation of the object.
      */
@@ -142,7 +143,8 @@ public class ToStringHelper
      * given object in the {@link #values} of this instance.
      * 
      * @param property The object to test.
-     * @return {@code 
+     * @return {@code true} if the given object should be ignored, {@code false}
+     *         otherwise.
      */
     private boolean shouldOmit(Object property) {
         return Objects.isNull(property) && omitNullValues;
