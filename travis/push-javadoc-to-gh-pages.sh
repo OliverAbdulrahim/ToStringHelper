@@ -11,7 +11,7 @@ if [[ "$TRAVIS_REPO_SLUG" == "OliverAbdulrahim/ToStringHelper" && "$TRAVIS_JDK_V
 
   cd gh-pages
   git clean -d -x -f
-  cp -Rf "$HOME/build/OliverAbdulrahim/ToStringHelper/target/site/apidocs/." "$PWD"
+  cp -Rf $HOME/build/OliverAbdulrahim/ToStringHelper/target/site/apidocs/. $PWD
   git add -f .
   git commit -m "Lastest Javadoc on successful Travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
   git push -fq origin gh-pages > /dev/null
