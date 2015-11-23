@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * An immutable {@code String} representation of an given object. Objects of 
- * this class wrap the data of an object specified during construction 
- * automatically using type introspection. 
+ * An immutable {@code String} representation of a given object. Objects of this
+ * class wrap the data of an object specified during construction automatically
+ * using type introspection.
  * 
  * <p> As an example, consider the {@code Person} class outlined below:
  * 
@@ -111,7 +111,7 @@ public class AutoToStringHelper
      * @param f The field whose data to return.
      * @return The value stored within the given field
      */
-    private Object getValue(final Field f) {
+    private Object getValue(Field f) {
         Object value = null;
         try {
             f.setAccessible(true);
