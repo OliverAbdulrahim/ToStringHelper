@@ -6,8 +6,8 @@ There are two variants of "to string" helper classes featured in this repository
 
 | Name | Description |
 |------|-------------|
-| [ToStringHelper](../../blob/master/src/main/java/functions/ToStringHelper.java) | A customizable `String` representation of an arbitrary object. |
-| [AutoToStringHelper](../../blob/master/src/main/java/functions/AutoToStringHelper.java) | An automatic `String` representation of an given object. |
+| [ToStringHelper](http://oliverabdulrahim.github.io/ToStringHelper/functions/ToStringHelper.html) | A customizable `String` representation of an arbitrary object. |
+| [AutoToStringHelper](http://oliverabdulrahim.github.io/ToStringHelper/functions/AutoToStringHelper.html) | An automatic `String` representation of an given object. |
 
 See the [wiki](../../wiki) for additional a walkthrough of these classes, and don't forget to checkout (heh) the [documentation](http://oliverabdulrahim.github.io/ToStringHelper/)!
 
