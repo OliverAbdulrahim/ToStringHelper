@@ -121,6 +121,10 @@ public class AutoToStringHelper
             Logger.getLogger(AutoToStringHelper.class.getName()).log(
                     Level.SEVERE, "No value or inaccessible field = " + f, ex);
         }
+        catch (SecurityException ex) {
+            Logger.getLogger(AutoToStringHelper.class.getName()).log(
+                    Level.SEVERE, "Can't access field = " + f, ex);
+        }
         return value;
     }
 
