@@ -97,7 +97,7 @@ public class ToStringHelper
      *
      * @return A reference to this object that omits {@code null} values.
      */
-    public ToStringHelper omitNullValues() {
+    public AbstractToStringHelper omitNullValues() {
         omitNullValues = true;
         return this;
     }
