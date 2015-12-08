@@ -39,8 +39,11 @@ abstract class AbstractToStringHelper {
     }
 
     /**
-     * Constructs an {@code AbstractToStringHelper} with the given object as the
-     * target.
+     * Constructs an {@code AbstractToStringHelper} with the given class as the
+     * name.
+     *
+     * <p> If the given class is anonymous, this constructor appends
+     * {@code "$Anonymous"} with the name of its super class.
      *
      * @param target The class that this helper represents.
      */
@@ -104,27 +107,25 @@ abstract class AbstractToStringHelper {
 
     /**
      * Specifies formatting for the name of a given class, returning a
-     * {@code String} containing the simple name of the class.
+     * {@code String} essentially containing the simple name of the given class.
      *
      * <p> If the given class is anonymous, this method returns a {@code String}
      * with the characters {@code "$Anonymous"} prepended with the name of the
-     * declaring class with a maximum depth of one.
+     * super class with a maximum depth of one.
      *
      * @param c The class to convert to a {@code String}.
      * @return A {@code String} formatted to contain the name of the given
      *         class.
      */
     private static String formatClass(Class<?> c) {
-        String name = c.getSimpleName();
-        // If the simple name of the class is empty, then the target object's
-        // class is anonymous.
-        if (name.isEmpty()) {
-            name = c.getSuperclass().getName();
-            // Removes any package names, add one to offset possible -1 index if
-            // '.' does not occur
-            name = name.substring(name.lastIndexOf('.') + 1);
-            name += "$Anonymous";
+        String name = c.getCanonicalName();
+        // If the canonical name of the class is null, then the given class is
+        // anonymous.
+        if (name == null) {
+            Class<?> declaring = c.getSuperclass();
+            name = declaring.getCanonicalName() + "$Anonymous";
         }
+        name = name.substring(name.lastIndexOf('.') + 1);
         return name;
     }
 
