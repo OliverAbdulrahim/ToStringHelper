@@ -9,9 +9,9 @@ import java.util.stream.Stream;
 /**
  * A mutable {@code String} representation of an arbitrary object.
  *
- * <p> This class imposes a single {@code abstract} method, {@link #toString()}.
+ * <p> This class imposes a single {@code abstract} method: {@link #toString()}.
  * The general contract of this method is to return the data represented by the
- * object with an arbitrary formatting sequence.
+ * object using an arbitrary formatting sequence.
  *
  * @author Oliver Abdulrahim
  */
@@ -25,17 +25,17 @@ abstract class AbstractToStringHelper {
     private final Map<String, Object> values;
 
     /**
-     * The name of this representation as specified during construction.
+     * The name of this representation as specified during construction. By
      * default, this is the name of the {@code Object} class.
      */
     private final String name;
 
     /**
-     * Constructs an {@code AbstractToStringHelper} with an arbitrary object as
-     * the target.
+     * Constructs an {@code AbstractToStringHelper} with the {@code Object}
+     * class as the name.
      */
     AbstractToStringHelper() {
-        this("Object");
+        this(Object.class);
     }
 
     /**
@@ -52,8 +52,7 @@ abstract class AbstractToStringHelper {
     }
 
     /**
-     * Constructs an {@code AbstractToStringHelper} with the given name and no
-     * target.
+     * Constructs an {@code AbstractToStringHelper} with the given name.
      */
     AbstractToStringHelper(String name) {
         this.name = name;
@@ -63,8 +62,7 @@ abstract class AbstractToStringHelper {
 // Mapping operations
 
     /**
-     * Returns the The name of this representation as specified during
-     * construction.
+     * Returns name of this representation as specified during construction.
      *
      * @return The name of this representation.
      */
@@ -122,9 +120,11 @@ abstract class AbstractToStringHelper {
         // If the canonical name of the class is null, then the given class is
         // anonymous.
         if (name == null) {
-            Class<?> declaring = c.getSuperclass();
-            name = declaring.getCanonicalName() + "$Anonymous";
+            Class<?> superClass = c.getSuperclass();
+            name = superClass.getCanonicalName() + "$Anonymous";
         }
+        // Removes any package names. What remains is essentially the simple
+        // name of the class
         name = name.substring(name.lastIndexOf('.') + 1);
         return name;
     }
@@ -222,11 +222,11 @@ abstract class AbstractToStringHelper {
 // Abstract methods
 
     /**
-     * Constructs and returns a {@code String} representation of the object or
-     * values wrapped by this one.
+     * Constructs and returns a {@code String} representation of the object,
+     * which includes values wrapped by this one.
      *
      * <p> The general contract of this method is to return the data represented
-     * by the object with an arbitrary formatting sequence.
+     * by the object using an arbitrary formatting sequence.
      *
      * @return A {@code String} representation of the object.
      */
