@@ -62,7 +62,7 @@ abstract class AbstractToStringHelper {
 // Mapping operations
 
     /**
-     * Returns name of this representation as specified during construction.
+     * Returns the name of this representation as specified during construction.
      *
      * @return The name of this representation.
      */
