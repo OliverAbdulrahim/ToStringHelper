@@ -76,10 +76,10 @@ public class ToStringHelper
     /**
      * Constructs a {@code ToStringHelper} with the given class as the name.
      *
-     * @param c The class whose name to use for this representation.
+     * @param _class The class whose name to use for this representation.
      */
-    public ToStringHelper(Class<?> c) {
-        super(c);
+    public ToStringHelper(Class<?> _class) {
+        super(_class);
     }
 
     /**

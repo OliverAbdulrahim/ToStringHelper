@@ -53,10 +53,10 @@ abstract class AbstractToStringHelper {
      * <p> If the given class is anonymous, this constructor appends
      * {@code "$Anonymous"} with the name of its super class.
      *
-     * @param target The class that this helper represents.
+     * @param _class The class that this helper represents.
      */
-    AbstractToStringHelper(Class<?> target) {
-        this(formatClass(target));
+    AbstractToStringHelper(Class<?> _class) {
+        this(formatClass(_class));
     }
 
     /**
@@ -120,16 +120,16 @@ abstract class AbstractToStringHelper {
      * with the characters {@code "$Anonymous"} prepended with the name of the
      * super class with a maximum depth of one.
      *
-     * @param c The class to convert to a {@code String}.
+     * @param _class The class to convert to a {@code String}.
      * @return A {@code String} formatted to contain the name of the given
      *         class.
      */
-    private static String formatClass(Class<?> c) {
-        String name = c.getCanonicalName();
+    private static String formatClass(Class<?> _class) {
+        String name = _class.getCanonicalName();
         // If the canonical name of the class is null, then the given class is
         // anonymous.
         if (name == null) {
-            Class<?> superClass = c.getSuperclass();
+            Class<?> superClass = _class.getSuperclass();
             name = superClass.getCanonicalName() + "$Anonymous";
         }
         // Removes any package names - what remains is essentially the simple
