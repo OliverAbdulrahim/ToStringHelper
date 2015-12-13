@@ -1,0 +1,22 @@
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/home/travis/build/OliverAbdulrahim/ToStringHelper/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2015. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/home/travis/build/OliverAbdulrahim/ToStringHelper/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'ToStringHelper 1.0 API'
+-linkoffline
+'http://docs.oracle.com/javase/8/docs/api' '/home/travis/build/OliverAbdulrahim/ToStringHelper/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'ToStringHelper 1.0 API'
