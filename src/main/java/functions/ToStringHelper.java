@@ -91,25 +91,30 @@ public class ToStringHelper
         super(name);
     }
 
+// ToStringHelper operations
+
     /**
      * Returns a reference to this object whose {@link #toString()} omits
      * {@code null} values.
      *
      * @return A reference to this object that omits {@code null} values.
      */
-    public AbstractToStringHelper omitNullValues() {
+    public ToStringHelper omitNullValues() {
         omitNullValues = true;
         return this;
     }
 
+// Override methods
+
     /**
-     * Associates the given property with the given tag within this
-     * representation.
+     * {@inheritDoc}
      *
-     * @param tag The name to associate with the given property.
-     * @param property The property to add with the given name.
-     * @return This object (after the add operation is complete), allowing for
-     *         chaining of operations.
+     * @apiNote This method is overridden here in order to change the return
+     *          value to a more concrete type. This allows calls to methods
+     *          first defined in this class (or in other words, methods that
+     *          exist in the {@code ToStringHelper} class but not the
+     *          {@code AbstractToStringHelper} class) to be chained to calls to
+     *          this method.
      */
     @Override
     public ToStringHelper add(String tag, Object property) {
