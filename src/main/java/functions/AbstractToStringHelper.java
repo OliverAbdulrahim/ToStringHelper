@@ -3,6 +3,7 @@ package functions;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -18,6 +19,13 @@ import java.util.stream.Stream;
 abstract class AbstractToStringHelper {
 
     /**
+     * Specifies a default name used if one is not provided during construction.
+     *
+     * @see #AbstractToStringHelper()
+     */
+    private static final String DEFAULT_NAME = formatClass(Object.class);
+
+    /**
      * Maps {@code String} tags to {@code Object} properties. The keys stored in
      * this {@code Map} are formatted with respect to their properties as
      * specified in the {@link #toString()} method for this class.
@@ -28,14 +36,14 @@ abstract class AbstractToStringHelper {
      * The name of this representation as specified during construction. By
      * default, this is the name of the {@code Object} class.
      */
-    private final String name;
+    private final Optional<String> name;
 
     /**
      * Constructs an {@code AbstractToStringHelper} with the {@code Object}
      * class as the name.
      */
     AbstractToStringHelper() {
-        this(Object.class);
+        this(DEFAULT_NAME);
     }
 
     /**
@@ -55,19 +63,20 @@ abstract class AbstractToStringHelper {
      * Constructs an {@code AbstractToStringHelper} with the given name.
      */
     AbstractToStringHelper(String name) {
-        this.name = name;
+        this.name = Optional.ofNullable(name);
         this.values = new LinkedHashMap<>();
     }
 
 // Mapping operations
 
     /**
-     * Returns the name of this representation as specified during construction.
+     * Returns the name of this representation, or the {@link #DEFAULT_NAME
+     * default name} if one was not specified at construction.
      *
      * @return The name of this representation.
      */
     String getName() {
-        return name;
+        return name.orElse(DEFAULT_NAME);
     }
 
     /**
@@ -123,8 +132,8 @@ abstract class AbstractToStringHelper {
             Class<?> superClass = c.getSuperclass();
             name = superClass.getCanonicalName() + "$Anonymous";
         }
-        // Removes any package names. What remains is essentially the simple
-        // name of the class
+        // Removes any package names - what remains is essentially the simple
+        // name of the class.
         name = name.substring(name.lastIndexOf('.') + 1);
         return name;
     }
