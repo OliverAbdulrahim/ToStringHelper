@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * A mutable {@code String} representation of an arbitrary object.
@@ -178,7 +177,7 @@ abstract class AbstractToStringHelper {
         // Writing this broke my heart... why, primitive types, why?!
         else if (obj.getClass().isArray()) {
             if (obj instanceof Object[]) {
-                objToString = wrapArray((Object[]) obj);
+                objToString = Arrays.deepToString((Object[]) obj);
             }
             else if (obj instanceof boolean[]) {
                 objToString = Arrays.toString((boolean[]) obj);
@@ -209,23 +208,6 @@ abstract class AbstractToStringHelper {
             objToString = obj.toString();
         }
         return objToString;
-    }
-
-    /**
-     * Wraps the given array into a {@code String}. If the array is
-     * multidimensional, then the returned {@code String} will contain a
-     * representation of the elements in the array.
-     *
-     * @param <T> The type of the elements in the array.
-     * @param array The array to wrap with a {@code String}.
-     * @return A {@code String} representation of the given array.
-     */
-    private static <T> String wrapArray(T[] array) {
-        boolean isMultidimensional = Stream.of(array)
-                .allMatch(obj -> obj.getClass().isArray());
-        return (isMultidimensional)
-                ? Arrays.deepToString(array)
-                : Arrays.toString(array);
     }
 
 // Abstract methods
