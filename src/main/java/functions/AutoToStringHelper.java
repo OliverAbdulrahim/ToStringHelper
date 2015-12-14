@@ -1,11 +1,11 @@
 package functions;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * An immutable {@code String} representation of a given object. Objects of this
@@ -101,7 +101,8 @@ public class AutoToStringHelper
      */
     private void introspectFields() {
         Field[] targetFields = target.getClass().getDeclaredFields();
-        Map<String, Object> upstream = Stream.of(targetFields)
+        Map<String, Object> upstream = Arrays
+                .stream(targetFields)
                 .collect(Collectors.toMap(Field :: getName, this :: getValue));
         addAll(upstream);
     }
