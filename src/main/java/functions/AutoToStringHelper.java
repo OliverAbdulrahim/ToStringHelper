@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  *
  *         private final int age;
  *
- *         public Person(String name, Gender gender, int age) {
+ *         Person(String name, Gender gender, int age) {
  *             this.name = name;
  *             this.gender = gender;
  *             this.age = age;
@@ -41,7 +41,7 @@ import java.util.stream.Stream;
  *
  * <pre>{@code
  *     Person p = new Person("Daniel", Person.Gender.MALE, 18);
- *     AutoToStringHelper auto = new AutoToStringHelper(p)
+ *     AutoToStringHelper auto = new AutoToStringHelper(p);
  *     System.out.println(auto);
  * }</pre>
  *
@@ -93,6 +93,8 @@ public class AutoToStringHelper
         introspectFields();
     }
 
+// Internal operations
+
     /**
      * Adds all fields contained within the {@link #target} object using type
      * introspection and maps their names to their respective values.
@@ -109,7 +111,7 @@ public class AutoToStringHelper
      * if necessary.
      *
      * @param f The field whose data to return.
-     * @return The value stored within the given field
+     * @return The value stored within the given field.
      */
     private Object getValue(Field f) {
         Object value = null;
@@ -123,6 +125,8 @@ public class AutoToStringHelper
         }
         return value;
     }
+
+// Override methods
 
     /**
      * Returns a {@code String} representation of the target object.
