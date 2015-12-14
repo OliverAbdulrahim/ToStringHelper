@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  * In this example, the {@code "Another Tag"} {@code String} is associated with
  * a {@code null} value, which causes it to be ignored when the
  * {@code ToStringHelper} is converted into a String. Therefore, the above
- * prints out the following:
+ * prints the following:
  *
  * <pre>{@code
  *     An Object{Some Tag = 12345}
@@ -66,8 +66,7 @@ public class ToStringHelper
     private boolean omitNullValues;
 
     /**
-     * Constructs a {@code ToStringHelper} with an arbitrary object as
-     * the target.
+     * Constructs a {@code ToStringHelper} targeting an arbitrary object.
      */
     public ToStringHelper() {
         super();
