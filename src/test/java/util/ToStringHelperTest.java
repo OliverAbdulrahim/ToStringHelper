@@ -1,8 +1,8 @@
 package util;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import util.ToStringHelper;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test harness for the {@link ToStringHelper ToStringHelper} class.
@@ -58,11 +58,11 @@ public class ToStringHelperTest {
         instance.add("Don't Recurse", instance);
 
         String expResult = testName + '{'
-                + "Hello, World! = 42"
-                + ", 1-D Array = [1, 2, 3]"
-                + ", 2-D Array = [[1.1, 2.2], [3.3, 4.4, 5.5]]"
-                + ", Nothing = null"
-                + ", Don't Recurse = (this ToStringHelper)"
+                + "Hello, World!=42"
+                + ", 1-D Array=[1, 2, 3]"
+                + ", 2-D Array=[[1.1, 2.2], [3.3, 4.4, 5.5]]"
+                + ", Nothing=null"
+                + ", Don't Recurse=(this ToStringHelper)"
                 + '}';
         String result = instance.toString();
 
