@@ -27,22 +27,38 @@ public abstract class AbstractToStringHelper {
     private final Map<String, Object> entries;
 
     /**
+     * The name of this representation.
+     */
+    private final String name;
+
+    /**
      * The name of this representation as specified during construction. By
      * default, this is the name of the {@code Object} class.
      */
-    private final Object target;
+    private Object target;
 
     /**
-     * Constructs an {@code AbstractToStringHelper} with the given class as the
-     * name.
+     * Constructs an {@code AbstractToStringHelper} with the name of the given
+     * object's class.
      *
-     * <p> If the given class is anonymous, this constructor appends
-     * {@code "$Anonymous"} with the name of its super class.
+     * @param target The object the helper represents.
+     * @implNote If the given class is anonymous, this constructor appends
+     *           {@code "$Anonymous"} with the name of its super class.
      *
-     * @param target The object that this helper represents.
      */
     protected AbstractToStringHelper(Object target) {
+        this(formatClass(target.getClass()));
         this.target = target;
+    }
+
+    /**
+     * Constructs an {@code AbstractToStringHelper} with the specified name and
+     * an arbitrary target object.
+     *
+     * @param name The name of the representation.
+     */
+    protected AbstractToStringHelper(String name) {
+        this.name = name;
         this.entries = new LinkedHashMap<>();
     }
 
@@ -149,16 +165,6 @@ public abstract class AbstractToStringHelper {
     }
 
     /**
-     * Returns a {@code String} containing the name of the class of this
-     * representation.
-     *
-     * @return The name of this representation.
-     */
-    protected final String name() {
-        return formatClass(target.getClass());
-    }
-
-    /**
      * Adds all the entries in the given {@code Map} into this object
      */
     protected final void addAll(Map<String, Object> values) {
@@ -166,6 +172,16 @@ public abstract class AbstractToStringHelper {
     }
 
 // Virtual methods
+
+    /**
+     * Returns a {@code String} containing the name of the class of this
+     * representation.
+     *
+     * @return The name of this representation.
+     */
+    protected String name() {
+        return name;
+    }
 
     /**
      * Associates the given property with the given tag within this
@@ -180,18 +196,6 @@ public abstract class AbstractToStringHelper {
         entries.put(tag, property);
         return this;
     }
-
-    /**
-     * Constructs and returns a {@code String} representation of this object,
-     * which includes values wrapped by this one.
-     *
-     * <p> The general contract of this method is to return the data represented
-     * by the object using an arbitrary formatting sequence.
-     *
-     * @return A {@code String} representation of this object.
-     */
-    @Override
-    public abstract String toString();
 
     /**
      * Returns a {@code String} containing the names of all fields in the target
@@ -233,5 +237,17 @@ public abstract class AbstractToStringHelper {
                 .map(mapper)
                 .collect(Collectors.joining(", "));
     }
+
+    /**
+     * Constructs and returns a {@code String} representation of this object,
+     * which includes values wrapped by this one.
+     *
+     * <p> The general contract of this method is to return the data represented
+     * by the object using an arbitrary formatting sequence.
+     *
+     * @return A {@code String} representation of this object.
+     */
+    @Override
+    public abstract String toString();
 
 }

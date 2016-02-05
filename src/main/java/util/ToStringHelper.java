@@ -1,7 +1,5 @@
 package util;
 
-import reflect.ReflectionUtilities;
-
 import java.util.Objects;
 
 /**
@@ -76,10 +74,10 @@ public class ToStringHelper
     /**
      * Constructs a {@code ToStringHelper} with the given class as the name.
      *
-     * @param c The class whose name to use for this representation.
+     * @param name The name of this representation.
      */
-    public ToStringHelper(Class<?> c) {
-        super(ReflectionUtilities.newInstance(c));
+    public ToStringHelper(String name) {
+        super(name);
     }
 
 // ToStringHelper operations
@@ -124,7 +122,7 @@ public class ToStringHelper
     public String toString() {
         String entries = toString(
                 entry -> !shouldOmit(entry.getValue()),
-                entry -> entry.getKey() + " = " + get(entry.getKey())
+                entry -> entry.getKey() + '=' + get(entry.getKey())
         );
         return name() + '{' + entries + '}';
     }
