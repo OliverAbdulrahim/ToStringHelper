@@ -1,11 +1,9 @@
 package functions;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
+import java.util.Map.Entry;
+import java.util.function.Function;
 
 /**
  * An immutable {@code String} representation of a given object. Objects of this
@@ -56,7 +54,7 @@ import java.util.stream.Collectors;
  * It is therefore possible to trivially override the {@code toString} method in
  * the {@code Person} class as such using an {@code ReflectiveToStringHelper}:
 
-* <pre>{@code
+ * <pre>{@code
  *     class Person {
  *         ...
  *         ＠Override
@@ -76,11 +74,11 @@ public class ReflectiveToStringHelper
     /**
      * The object that this helper represents.
      */
-    private final Object target;
+    private Object target;
 
     /**
-     * Constructs an {@code ReflectiveToStringHelper} with the given object as the
-     * target.
+     * Constructs a {@code ReflectiveToStringHelper} with the given object as
+     * the target.
      *
      * <p> This constructor retrieves all fields from the given object using
      * type introspection and automatically adds them into the structure.
@@ -88,43 +86,9 @@ public class ReflectiveToStringHelper
      * @param target The name for this representation.
      */
     public ReflectiveToStringHelper(Object target) {
-        super(target.getClass());
-        this.target = target;
-        introspectFields();
-    }
-
-// Internal operations
-
-    /**
-     * Adds all fields contained within the {@link #target} object using type
-     * introspection and maps their names to their respective values.
-     */
-    private void introspectFields() {
-        Field[] targetFields = target.getClass().getDeclaredFields();
-        Map<String, Object> upstream = Arrays
-                .stream(targetFields)
-                .collect(Collectors.toMap(Field :: getName, this :: getValue));
+        super(target);
+        Map<String, Object> upstream = namesToValues();
         addAll(upstream);
-    }
-
-    /**
-     * Returns the value stored within the given field, setting it to accessible
-     * if necessary.
-     *
-     * @param f The field whose data to return.
-     * @return The value stored within the given field.
-     */
-    private Object getValue(Field f) {
-        Object value = null;
-        try {
-            f.setAccessible(true);
-            value = f.get(target);
-        }
-        catch (IllegalAccessException ex) {
-            Logger.getLogger(ReflectiveToStringHelper.class.getName())
-                    .log(Level.SEVERE, "Can't access field = " + f, ex);
-        }
-        return value;
     }
 
 // Override methods
@@ -137,11 +101,36 @@ public class ReflectiveToStringHelper
      */
     @Override
     public String toString() {
-        String mappedEntries = entries()
-                .stream()
-                .map(entry -> entry.getKey() + " = " + get(entry.getKey()))
-                .collect(Collectors.joining(", "));
-        return getName() + '{' + mappedEntries + '}';
+        String entries = toString(e -> e.getKey() + '=' + get(e.getKey()));
+        return name() + '{' + entries + '}';
+    }
+
+    /**
+     * Returns a {@code String} representation of the target object, formatted
+     * using the specified {@code Function}.
+     *
+     * @param mapper The formatting function.
+     * @return A {@code String} representation of the target object.
+     */
+    public String toString(
+            Function<? super Entry<String, Object>, String> mapper)
+    {
+        return formatEntries(mapper);
+    }
+
+    /**
+     * Returns a {@code Map} that associates the names of the fields of the
+     * target object to their values.
+     *
+     * @return A map containing the names of the fields of the target object to
+     *         their values.
+     */
+    private Map<String, Object> namesToValues() {
+        return ReflectionUtilities.mapFields(
+                target.getClass(),
+                Field :: getName,
+                f -> ReflectionUtilities.getValue(target, f)
+        );
     }
 
 }
