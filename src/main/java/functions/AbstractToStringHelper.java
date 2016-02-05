@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -23,7 +24,7 @@ public abstract class AbstractToStringHelper {
      * this {@code Map} are formatted with respect to their properties as
      * specified in the {@link #toString()} method for this class.
      */
-    private final Map<String, Object> values;
+    private final Map<String, Object> entries;
 
     /**
      * The name of this representation as specified during construction. By
@@ -42,26 +43,7 @@ public abstract class AbstractToStringHelper {
      */
     protected AbstractToStringHelper(Object target) {
         this.target = target;
-        this.values = new LinkedHashMap<>();
-    }
-
-// Mapping operations
-
-    /**
-     * Returns a {@code String} containing the name of the class of this
-     * representation.
-     *
-     * @return The name of this representation.
-     */
-    protected String name() {
-        return formatClass(target.getClass());
-    }
-
-    /**
-     * Adds all the entries in the given {@code Map} into this object
-     */
-    protected void addAll(Map<String, Object> values) {
-        this.values.putAll(values);
+        this.entries = new LinkedHashMap<>();
     }
 
 // Formatting operations
@@ -90,20 +72,6 @@ public abstract class AbstractToStringHelper {
         // name of the class.
         name = name.substring(name.lastIndexOf('.') + 1);
         return name;
-    }
-
-    /**
-     * Returns a {@code String} representation of the property, or value, mapped
-     * to the given tag, or key. Wraps the given value if it is an array or
-     * {@code null}.
-     *
-     * @param tag The key whose associated value to return.
-     * @return A formatted property mapped to the given tag.
-     * @see #formatObject(Object)
-     */
-    public String get(String tag) {
-        Object value = values.get(tag);
-        return formatObject(value);
     }
 
     /**
@@ -167,34 +135,103 @@ public abstract class AbstractToStringHelper {
     }
 
     /**
-     * Returns a {@code String} containing the names of all fields in the target
-     * object paired with their data.
+     * Returns a {@code String} representation of the property, or value, mapped
+     * to the given tag, or key. Wraps the given value if it is an array or
+     * {@code null}.
      *
-     * @param mapper The function to format each entry by.
-     * @return A {@code String} containing the names of all fields in the target
-     *         object paired with their data.
+     * @param tag The key whose associated value to return.
+     * @return A formatted property mapped to the given tag.
+     * @see #formatObject(Object)
      */
-    protected String formatEntries(
-            Function<? super Entry<String, Object>, String> mapper)
-    {
-        return values.entrySet()
-                .stream()
-                .map(mapper)
-                .collect(Collectors.joining(", "));
+    protected final String get(String tag) {
+        Object value = entries.get(tag);
+        return formatObject(value);
     }
 
-// Abstract methods
+    /**
+     * Returns a {@code String} containing the name of the class of this
+     * representation.
+     *
+     * @return The name of this representation.
+     */
+    protected final String name() {
+        return formatClass(target.getClass());
+    }
 
     /**
-     * Constructs and returns a {@code String} representation of the object,
+     * Adds all the entries in the given {@code Map} into this object
+     */
+    protected final void addAll(Map<String, Object> values) {
+        this.entries.putAll(values);
+    }
+
+// Virtual methods
+
+    /**
+     * Associates the given property with the given tag within this
+     * representation.
+     *
+     * @param tag The name to associate with the given property.
+     * @param property The property to add with the given name.
+     * @return This object (after the add operation is complete), allowing for
+     *         chaining of operations.
+     */
+    protected AbstractToStringHelper add(String tag, Object property) {
+        entries.put(tag, property);
+        return this;
+    }
+
+    /**
+     * Constructs and returns a {@code String} representation of this object,
      * which includes values wrapped by this one.
      *
      * <p> The general contract of this method is to return the data represented
      * by the object using an arbitrary formatting sequence.
      *
-     * @return A {@code String} representation of the object.
+     * @return A {@code String} representation of this object.
      */
     @Override
     public abstract String toString();
+
+    /**
+     * Returns a {@code String} containing the names of all fields in the target
+     * object paired with their data, formatted by the given {@code Function}.
+     *
+     * @param mapper The stateless, non-interfering function to format each
+     *        entry by.
+     * @return A {@code String} containing the names of all fields in the target
+     *         object paired with their data.
+     */
+    public String toString(
+            Function<? super Entry<String, Object>, String> mapper)
+    {
+        return entries.entrySet()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.joining(", "));
+    }
+
+    /**
+     * Returns a {@code String} containing the names of all fields in the target
+     * object paired with their data, filtered by the given {@code Predicate},
+     * formatted by the given {@code Function}.
+     *
+     * @param filter The {@code Predicate} to apply to each entry in this
+     *        object.
+     * @param mapper The stateless, non-interfering function to format each
+     *        entry by.
+     * @return A {@code String} containing the names of all fields in the target
+     *         object paired with their data.
+     */
+    public String toString(
+            Predicate<? super Entry<String, Object>> filter,
+            Function<? super Entry<String, Object>, String> mapper)
+    {
+        return entries.entrySet()
+                .stream()
+                .filter(filter)
+                .map(mapper)
+                .collect(Collectors.joining(", "));
+    }
 
 }

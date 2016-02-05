@@ -1,7 +1,6 @@
 package functions;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * A mutable {@code String} representation of an arbitrary object.
@@ -69,25 +68,16 @@ public class ToStringHelper
      * Constructs a {@code ToStringHelper} targeting an arbitrary object.
      */
     public ToStringHelper() {
-        super();
+        super(new Object());
     }
 
     /**
      * Constructs a {@code ToStringHelper} with the given class as the name.
      *
-     * @param _class The class whose name to use for this representation.
+     * @param c The class whose name to use for this representation.
      */
-    public ToStringHelper(Class<?> _class) {
-        super(_class);
-    }
-
-    /**
-     * Constructs a {@code ToStringHelper} with the given name.
-     *
-     * @param name The name for this representation.
-     */
-    public ToStringHelper(String name) {
-        super(name);
+    public ToStringHelper(Class<?> c) {
+        super(ReflectionUtilities.newInstance(c));
     }
 
 // ToStringHelper operations
@@ -130,12 +120,11 @@ public class ToStringHelper
      */
     @Override
     public String toString() {
-        String mappedEntries = entries()
-                .stream()
-                .filter(entry -> !shouldOmit(entry.getValue()))
-                .map(entry -> entry.getKey() + " = " + get(entry.getKey()))
-                .collect(Collectors.joining(", "));
-        return getName() + '{' + mappedEntries + '}';
+        String entries = toString(
+                entry -> !shouldOmit(entry.getValue()),
+                entry -> entry.getKey() + " = " + get(entry.getKey())
+        );
+        return name() + '{' + entries + '}';
     }
 
     /**
@@ -144,7 +133,7 @@ public class ToStringHelper
      * should be ignored, {@code false} otherwise.
      *
      * <p> This method makes no assumptions relating to the existence of the
-     * given object in the {@link #values} of this instance.
+     * given object in the entries stored in this instance.
      *
      * @param property The object to test.
      * @return {@code true} if the given object should be ignored, {@code false}
