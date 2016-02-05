@@ -3,8 +3,9 @@ package functions;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.Map.Entry;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * A mutable {@code String} representation of an arbitrary object.
@@ -15,14 +16,7 @@ import java.util.Set;
  *
  * @author Oliver Abdulrahim
  */
-abstract class AbstractToStringHelper {
-
-    /**
-     * Specifies a default name used if one is not provided during construction.
-     *
-     * @see #AbstractToStringHelper()
-     */
-    private static final String DEFAULT_NAME = formatClass(Object.class);
+public abstract class AbstractToStringHelper {
 
     /**
      * Maps {@code String} tags to {@code Object} properties. The keys stored in
@@ -35,15 +29,7 @@ abstract class AbstractToStringHelper {
      * The name of this representation as specified during construction. By
      * default, this is the name of the {@code Object} class.
      */
-    private final Optional<String> name;
-
-    /**
-     * Constructs an {@code AbstractToStringHelper} with the {@code Object}
-     * class as the name.
-     */
-    AbstractToStringHelper() {
-        this(DEFAULT_NAME);
-    }
+    private final Object target;
 
     /**
      * Constructs an {@code AbstractToStringHelper} with the given class as the
@@ -52,61 +38,30 @@ abstract class AbstractToStringHelper {
      * <p> If the given class is anonymous, this constructor appends
      * {@code "$Anonymous"} with the name of its super class.
      *
-     * @param _class The class that this helper represents.
+     * @param target The object that this helper represents.
      */
-    AbstractToStringHelper(Class<?> _class) {
-        this(formatClass(_class));
-    }
-
-    /**
-     * Constructs an {@code AbstractToStringHelper} with the given name.
-     */
-    AbstractToStringHelper(String name) {
-        this.name = Optional.ofNullable(name);
+    protected AbstractToStringHelper(Object target) {
+        this.target = target;
         this.values = new LinkedHashMap<>();
     }
 
 // Mapping operations
 
     /**
-     * Returns the name of this representation, or the {@link #DEFAULT_NAME
-     * default name} if one was not specified at construction.
+     * Returns a {@code String} containing the name of the class of this
+     * representation.
      *
      * @return The name of this representation.
      */
-    String getName() {
-        return name.orElse(DEFAULT_NAME);
-    }
-
-    /**
-     * Associates the given property with the given tag within this
-     * representation.
-     *
-     * @param tag The name to associate with the given property.
-     * @param property The property to add with the given name.
-     * @return This object (after the add operation is complete), allowing for
-     *         chaining of operations.
-     */
-    AbstractToStringHelper add(String tag, Object property) {
-        values.put(tag, property);
-        return this;
+    protected String name() {
+        return formatClass(target.getClass());
     }
 
     /**
      * Adds all the entries in the given {@code Map} into this object
      */
-    void addAll(Map<String, Object> values) {
+    protected void addAll(Map<String, Object> values) {
         this.values.putAll(values);
-    }
-
-    /**
-     * Returns an set view of the entries of tags and properties contained
-     * within this object.
-     *
-     * @return An set containing the tag-property entries of this object.
-     */
-    Set<Map.Entry<String, Object>> entries() {
-        return values.entrySet();
     }
 
 // Formatting operations
@@ -119,16 +74,16 @@ abstract class AbstractToStringHelper {
      * with the characters {@code "$Anonymous"} prepended with the name of the
      * super class with a maximum depth of one.
      *
-     * @param _class The class to convert to a {@code String}.
+     * @param c The class to convert to a {@code String}.
      * @return A {@code String} formatted to contain the name of the given
      *         class.
      */
-    private static String formatClass(Class<?> _class) {
-        String name = _class.getCanonicalName();
+    private static String formatClass(Class<?> c) {
+        String name = c.getCanonicalName();
         // If the canonical name of the class is null, then the given class is
         // anonymous.
         if (name == null) {
-            Class<?> superClass = _class.getSuperclass();
+            Class<?> superClass = c.getSuperclass();
             name = superClass.getCanonicalName() + "$Anonymous";
         }
         // Removes any package names - what remains is essentially the simple
@@ -140,15 +95,13 @@ abstract class AbstractToStringHelper {
     /**
      * Returns a {@code String} representation of the property, or value, mapped
      * to the given tag, or key. Wraps the given value if it is an array or
-     * {@code null}. See the {@link #formatObject(java.lang.Object)} method for
-     * a more formal description for the {@code String}s returned by this
-     * method.
+     * {@code null}.
      *
      * @param tag The key whose associated value to return.
      * @return A formatted property mapped to the given tag.
-     * @see #formatObject(java.lang.Object)
+     * @see #formatObject(Object)
      */
-    String get(String tag) {
+    public String get(String tag) {
         Object value = values.get(tag);
         return formatObject(value);
     }
@@ -173,6 +126,9 @@ abstract class AbstractToStringHelper {
         }
         else if (obj == this) {
             objToString = "(this ToStringHelper)";
+        }
+        else if (obj instanceof String) {
+            objToString = '\"' + obj.toString() + '\"';
         }
         // Writing this broke my heart... why, primitive types, why?!
         else if (obj.getClass().isArray()) {
@@ -208,6 +164,23 @@ abstract class AbstractToStringHelper {
             objToString = obj.toString();
         }
         return objToString;
+    }
+
+    /**
+     * Returns a {@code String} containing the names of all fields in the target
+     * object paired with their data.
+     *
+     * @param mapper The function to format each entry by.
+     * @return A {@code String} containing the names of all fields in the target
+     *         object paired with their data.
+     */
+    protected String formatEntries(
+            Function<? super Entry<String, Object>, String> mapper)
+    {
+        return values.entrySet()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.joining(", "));
     }
 
 // Abstract methods
