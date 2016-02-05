@@ -1,5 +1,3 @@
-package functions;
-
 /**
  * The {@code Person} class contains a simple encapsulation of a human being
  * with various defining attributes for use in a testing environment.

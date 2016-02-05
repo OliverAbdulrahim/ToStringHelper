@@ -1,10 +1,8 @@
-package functions;
-
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
- * Test harness for the {@link functions.ToStringHelper ToStringHelper} class.
+ * Test harness for the {@link ToStringHelper ToStringHelper} class.
  *
  * @author Oliver Abdulrahim
  */
