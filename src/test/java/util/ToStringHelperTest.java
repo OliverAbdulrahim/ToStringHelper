@@ -26,13 +26,13 @@ public class ToStringHelperTest {
                 .add("Null property", null);
 
         String nonOmitExpResult = testName + '{'
-                + "Non-null property = 1"
-                + ", Null property = null"
+                + "Non-null property=1"
+                + ", Null property=null"
                 + '}';
         String nonOmitResult = instance.toString();
 
         String omitExpResult = testName + '{'
-                + "Non-null property = 1"
+                + "Non-null property=1"
                 + '}';
         String omitResult = instance.omitNullValues().toString();
 

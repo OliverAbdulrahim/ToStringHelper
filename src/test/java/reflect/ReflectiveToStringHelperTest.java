@@ -25,7 +25,7 @@ public class ReflectiveToStringHelperTest {
         Person p = new Person("Daniel", Person.Gender.MALE, 18);
         ReflectiveToStringHelper instance = new ReflectiveToStringHelper(p);
 
-        String expResult = "Person{gender=MALE, name=Daniel, age=18}";
+        String expResult = "Person{gender=MALE, name=\"Daniel\", age=18}";
         String result = instance.toString();
 
         assertEquals(expResult, result);
