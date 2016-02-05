@@ -1,5 +1,7 @@
+package util;
+
 /**
- * The {@code Person} class contains a simple encapsulation of a human being
+ * The {@code util.Person} class contains a simple encapsulation of a human being
  * with various defining attributes for use in a testing environment.
  *
  * <p> Objects of this class are <em>immutable</em>; their properties may not

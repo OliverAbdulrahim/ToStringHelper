@@ -1,5 +1,9 @@
+package util;
+
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import util.AbstractToStringHelper;
+import util.ToStringHelper;
 
 /**
  * Test harness for the

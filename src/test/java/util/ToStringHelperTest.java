@@ -1,5 +1,8 @@
+package util;
+
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import util.ToStringHelper;
 
 /**
  * Test harness for the {@link ToStringHelper ToStringHelper} class.
