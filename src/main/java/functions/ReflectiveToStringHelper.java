@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  *
  * <pre>{@code
  *     Person p = new Person("Daniel", Person.Gender.MALE, 18);
- *     AutoToStringHelper auto = new AutoToStringHelper(p);
+ *     ReflectiveToStringHelper auto = new ReflectiveToStringHelper(p);
  *     System.out.println(auto);
  * }</pre>
  *
@@ -54,14 +54,14 @@ import java.util.stream.Collectors;
  * }</pre>
  *
  * It is therefore possible to trivially override the {@code toString} method in
- * the {@code Person} class as such using an {@code AutoToStringHelper}:
+ * the {@code Person} class as such using an {@code ReflectiveToStringHelper}:
 
 * <pre>{@code
  *     class Person {
  *         ...
  *         ＠Override
  *         public String toString() {
- *             return new AutoToStringHelper(this).toString();
+ *             return new ReflectiveToStringHelper(this).toString();
  *         }
  *         ...
  *     }
@@ -69,7 +69,7 @@ import java.util.stream.Collectors;
  *
  * @author Oliver Abdulrahim
  */
-public class AutoToStringHelper
+public class ReflectiveToStringHelper
     extends AbstractToStringHelper
 {
 
@@ -79,7 +79,7 @@ public class AutoToStringHelper
     private final Object target;
 
     /**
-     * Constructs an {@code AutoToStringHelper} with the given object as the
+     * Constructs an {@code ReflectiveToStringHelper} with the given object as the
      * target.
      *
      * <p> This constructor retrieves all fields from the given object using
@@ -87,7 +87,7 @@ public class AutoToStringHelper
      *
      * @param target The name for this representation.
      */
-    public AutoToStringHelper(Object target) {
+    public ReflectiveToStringHelper(Object target) {
         super(target.getClass());
         this.target = target;
         introspectFields();
@@ -121,7 +121,7 @@ public class AutoToStringHelper
             value = f.get(target);
         }
         catch (IllegalAccessException ex) {
-            Logger.getLogger(AutoToStringHelper.class.getName())
+            Logger.getLogger(ReflectiveToStringHelper.class.getName())
                     .log(Level.SEVERE, "Can't access field = " + f, ex);
         }
         return value;
