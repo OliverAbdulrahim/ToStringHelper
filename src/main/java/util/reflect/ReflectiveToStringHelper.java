@@ -1,4 +1,4 @@
-package reflect;
+package util.reflect;
 
 import util.AbstractToStringHelper;
 
